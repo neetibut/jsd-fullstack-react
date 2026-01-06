@@ -76,13 +76,12 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
         <input
           onChange={handleChange}
           value={form.username}
+          name="username"
           className="bg-white mx-1 w-32 px-2 rounded border"
           placeholder="Username"
           required
           minLength={3}
           maxLength={20}
-          pattern="^[a-zA-Z0-9_]{3,20}$"
-          autoComplete="username-new"
         />
         <input
           onChange={handleChange}
