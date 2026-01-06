@@ -76,30 +76,42 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
         <input
           onChange={handleChange}
           value={form.username}
-          name="username"
           className="bg-white mx-1 w-32 px-2 rounded border"
           placeholder="Username"
+          required
+          minLength={3}
+          maxLength={20}
+          pattern="^[a-zA-Z0-9_]{3,20}$"
+          autoComplete="username-new"
         />
         <input
           onChange={handleChange}
           value={form.email}
           name="email"
-          className="bg-white mx-1 w-32 px-2 rounded border"
+          className="bg-white mx-1 w-64 px-2 rounded border"
           placeholder="Email"
+          type="email"
+          required
         />
-        <input
+        <select
           onChange={handleChange}
           value={form.role}
           name="role"
           className="bg-white mx-1 w-32 px-2 rounded border"
-          placeholder="Role"
-        />
+        >
+          <option value="">Select role</option>
+          <option value="user">user</option>
+          <option value="admin">admin</option>
+        </select>
         <input
           onChange={handleChange}
           value={form.password}
           name="password"
           className="bg-white mx-1 w-32 px-2 rounded border"
           placeholder="Password"
+          type="password"
+          required
+          minLength={8}
         />
         <button
           type="submit"
@@ -128,6 +140,7 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
                       onChange={handleEditChange}
                       name="username"
                       className="bg-white w-24 px-2 rounded border"
+                      required
                     />
                   </td>
                   <td className="border p-2 ">
@@ -135,16 +148,22 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
                       value={editForm.email}
                       onChange={handleEditChange}
                       name="email"
-                      className="bg-white w-24 px-2 rounded border"
+                      className="bg-white w-full px-2 rounded border"
+                      type="email"
+                      required
                     />
                   </td>
                   <td className="border p-2 ">
-                    <input
+                    <select
                       value={editForm.role}
                       onChange={handleEditChange}
                       name="role"
                       className="bg-white w-24 px-2 rounded border"
-                    />
+                    >
+                      <option value="">Select role</option>
+                      <option value="user">user</option>
+                      <option value="admin">admin</option>
+                    </select>
                   </td>
                   <td className="border p-2 ">
                     <button

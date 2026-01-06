@@ -56,6 +56,8 @@ export function Navbar({ user, authLoading, authError, login, logout }) {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email"
                 className="bg-white text-black px-2 rounded border text-base w-44"
+                type="email"
+                required
               />
               <input
                 value={password}
@@ -63,6 +65,8 @@ export function Navbar({ user, authLoading, authError, login, logout }) {
                 placeholder="password"
                 type="password"
                 className="bg-white text-black px-2 rounded border text-base w-32"
+                required
+                minLength={8}
               />
               <button
                 type="submit"
