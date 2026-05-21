@@ -1,21 +1,35 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
-export function Navbar({ user, authLoading, authError, login, logout }) {
+export function Navbar() {
+  const { user, authLoading, authError, login, logout, register } = useAuth();
+  const [mode, setMode] = useState("login");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const resetForm = () => {
+    setUsername("");
+    setEmail("");
+    setPassword("");
+  };
+
+  const switchMode = (next) => {
+    setMode(next);
+    resetForm();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    const ok = await login({ email, password });
+    const ok =
+      mode === "login"
+        ? await login({ email, password })
+        : await register({ username, email, password });
     setSubmitting(false);
-
-    if (ok) {
-      setEmail("");
-      setPassword("");
-    }
+    if (ok) resetForm();
   };
 
   return (
@@ -51,6 +65,18 @@ export function Navbar({ user, authLoading, authError, login, logout }) {
             </>
           ) : (
             <form onSubmit={handleSubmit} className="flex items-center gap-x-2">
+              {mode === "signup" && (
+                <input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="username"
+                  className="bg-white text-black px-2 rounded border text-base w-32"
+                  type="text"
+                  required
+                  minLength={3}
+                  maxLength={20}
+                />
+              )}
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -67,13 +93,21 @@ export function Navbar({ user, authLoading, authError, login, logout }) {
                 className="bg-white text-black px-2 rounded border text-base w-32"
                 required
                 minLength={8}
+                maxLength={72}
               />
               <button
                 type="submit"
                 disabled={submitting}
                 className="cursor-pointer bg-sky-500 hover:bg-sky-600 disabled:bg-sky-300 text-white px-3 py-1 rounded-xl text-base"
               >
-                Login
+                {mode === "login" ? "Login" : "Sign up"}
+              </button>
+              <button
+                type="button"
+                onClick={() => switchMode(mode === "login" ? "signup" : "login")}
+                className="cursor-pointer text-teal-100 hover:text-white underline text-sm"
+              >
+                {mode === "login" ? "Sign up" : "Log in"}
               </button>
             </form>
           )}

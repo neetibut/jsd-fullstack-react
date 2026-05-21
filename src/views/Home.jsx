@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { UserTable } from "../components/UserTable";
 import { AdminTable } from "../components/AdminTable";
-import axios from "axios";
-import { useOutletContext } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Home() {
-  const { user, authLoading, apiBase } = useOutletContext();
+  const { user, authLoading, apiBase } = useAuth();
   const [view, setView] = useState(null);
   const [users, setUsers] = useState([]);
 
@@ -16,8 +15,10 @@ export default function Home() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(apiBase);
-      setUsers(res.data.data);
+      const res = await fetch(`${apiBase}/users`);
+      if (!res.ok) throw new Error("Failed to fetch users");
+      const response = await res.json();
+      setUsers(response.data);
     } catch {
       alert("Failed to fetch users");
     }
@@ -25,7 +26,8 @@ export default function Home() {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiBase]); // fetchUsers only changes when apiBase changes
 
   const askAi = async (e) => {
     e.preventDefault();
@@ -38,19 +40,22 @@ export default function Home() {
     setAskResult(null);
 
     try {
-      const res = await axios.post(
-        `${apiBase}/ask`,
-        { question: q, topK: 5 },
-        { withCredentials: true }
-      );
-      setAskResult(res.data?.data || null);
+      const res = await fetch(`${apiBase}/users/ask`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q, topK: 5 }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(
+          body.message || body.error || body.details || "Failed to ask AI",
+        );
+      }
+      const data = await res.json();
+      setAskResult(data?.data || null);
     } catch (err) {
-      const message =
-        err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        err?.response?.data?.details ||
-        err.message;
-      setAskError(message || "Failed to ask AI");
+      setAskError(err.message || "Failed to ask AI");
     } finally {
       setAskLoading(false);
     }
@@ -147,7 +152,7 @@ export default function Home() {
                 users={users}
                 setUsers={setUsers}
                 fetchUsers={fetchUsers}
-                API={apiBase}
+                API={`${apiBase}/users`}
               />
             ) : (
               <div className="text-xl font-bold">

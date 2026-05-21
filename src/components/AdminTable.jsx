@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 
 export function AdminTable({ users, setUsers, fetchUsers, API }) {
@@ -15,6 +14,7 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
     email: "",
     role: "",
   });
+  const [formError, setFormError] = useState(null);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,24 +26,32 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError(null);
     try {
-      await axios.post(API, form, { withCredentials: true });
-      await fetchUsers();
-      // Reset the form
-      setForm({
-        username: "",
-        email: "",
-        role: "",
-        password: "",
+      const res = await fetch(API, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || body.error || "Failed to create user");
+      }
+      await fetchUsers();
+      setForm({ username: "", email: "", role: "", password: "" });
     } catch (error) {
-      console.error("Error creating user:", error);
+      setFormError(error.message || "Failed to create user");
     }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this user?")) return;
-    await axios.delete(`${API}/${id}`, { withCredentials: true });
+    const res = await fetch(`${API}/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    if (!res.ok) return;
     setUsers(users.filter((user) => user._id !== id));
   };
 
@@ -57,12 +65,22 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
   };
 
   const handleEditSave = async (id) => {
+    setFormError(null);
     try {
-      await axios.patch(`${API}/${id}`, editForm, { withCredentials: true });
+      const res = await fetch(`${API}/${id}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editForm),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || body.error || "Failed to update user");
+      }
       await fetchUsers();
       setEditId(null);
     } catch (error) {
-      console.error("Error updating member:", error);
+      setFormError(error.message || "Failed to update user");
     }
   };
 
@@ -72,6 +90,11 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
 
   return (
     <div className="flex flex-col items-center">
+      {formError && (
+        <div className="w-full mb-2 px-4 py-2 bg-rose-100 text-rose-800 text-sm rounded border border-rose-300">
+          {formError}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="pb-3">
         <input
           onChange={handleChange}
@@ -111,6 +134,7 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
           type="password"
           required
           minLength={8}
+          maxLength={72}
         />
         <button
           type="submit"
@@ -140,6 +164,8 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
                       name="username"
                       className="bg-white w-24 px-2 rounded border"
                       required
+                      minLength={3}
+                      maxLength={20}
                     />
                   </td>
                   <td className="border p-2 ">
