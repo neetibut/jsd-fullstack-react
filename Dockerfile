@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:24 AS base
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
