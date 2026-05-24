@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 
 export function Navbar() {
   const { user, authLoading, authError, login, logout, register } = useAuth();
+
   const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -104,7 +105,9 @@ export function Navbar() {
               </button>
               <button
                 type="button"
-                onClick={() => switchMode(mode === "login" ? "signup" : "login")}
+                onClick={() =>
+                  switchMode(mode === "login" ? "signup" : "login")
+                }
                 className="cursor-pointer text-teal-100 hover:text-white underline text-sm"
               >
                 {mode === "login" ? "Sign up" : "Log in"}

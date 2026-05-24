@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
   const login = async ({ email, password }) => {
     setAuthError(null);
     try {
-      const res = await fetch(`${apiBase}/users/auth/cookie/login`, {
+      const res = await fetch(`${apiBase}/users/login`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
   const register = async ({ username, email, password }) => {
     setAuthError(null);
     try {
-      const res = await fetch(`${apiBase}/users/register`, {
+      const res = await fetch(`${apiBase}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
@@ -73,7 +73,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     setAuthError(null);
     try {
-      await fetch(`${apiBase}/users/auth/cookie/logout`, {
+      await fetch(`${apiBase}/users/auth/logout`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
