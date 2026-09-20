@@ -30,6 +30,11 @@ export function useChat() {
             "The AI is rate limited right now. Please try again in a little while.",
           );
         }
+        if (res.status === 504) {
+          throw new Error(
+            "The AI took too long to respond. Please try again.",
+          );
+        }
         throw new Error(body.message || body.error || "Request failed");
       }
       return res.json();
