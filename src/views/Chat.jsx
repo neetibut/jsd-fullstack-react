@@ -73,7 +73,8 @@ export default function Chat() {
       <section className="text-center">
         <h1 className="text-4xl font-extrabold">Ask AI about users</h1>
         <p className="text-gray-600 mt-1">
-          Grounded in your database with vector search — follow-up questions
+          Grounded in your database. The assistant picks its own tools —
+          searching, counting, or looking people up — and follow-ups are
           welcome.
         </p>
       </section>

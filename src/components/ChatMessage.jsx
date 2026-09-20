@@ -2,12 +2,14 @@ import { useState } from "react";
 
 import { MarkdownText } from "./MarkdownText";
 
-// One turn in the thread. Assistant turns can expand the users that were
-// retrieved to ground the answer.
+// One turn in the thread. Assistant turns show which tools the agent chose and
+// can expand the users that were retrieved to ground the answer.
 export function ChatMessage({ message }) {
   const [showSources, setShowSources] = useState(false);
   const isUser = message.role === "user";
   const sources = Array.isArray(message.sources) ? message.sources : [];
+  // Empty on the non-agentic path and on messages saved before tools existed.
+  const toolCalls = Array.isArray(message.toolCalls) ? message.toolCalls : [];
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -27,6 +29,20 @@ export function ChatMessage({ message }) {
             <MarkdownText>{message.content}</MarkdownText>
           )}
         </div>
+
+        {!isUser && toolCalls.length ? (
+          <div className="mt-1 flex flex-wrap gap-1">
+            {toolCalls.map((t, idx) => (
+              <span
+                key={idx}
+                className="text-[11px] bg-teal-50 text-teal-800 border border-teal-200 rounded-full px-2 py-0.5"
+                title={`${t.name}(${JSON.stringify(t.args ?? {})})`}
+              >
+                {t.summary || t.name}
+              </span>
+            ))}
+          </div>
+        ) : null}
 
         {!isUser && sources.length ? (
           <div className="mt-1">
