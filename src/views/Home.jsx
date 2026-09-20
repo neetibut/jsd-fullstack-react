@@ -71,13 +71,13 @@ export default function Home() {
           )}
         </div>
       </section>
-      <section className="w-full flex justify-center gap-x-3">
+      <section className="w-full min-w-0 flex justify-center gap-x-3">
         {view === "user" ? (
-          <section className=" p-5  flex">
+          <section className="p-5 flex w-full min-w-0">
             <UserTable users={users} />
           </section>
         ) : view === "admin" ? (
-          <section className=" p-5  flex">
+          <section className="p-5 flex w-full min-w-0">
             {authLoading ? (
               <div className="text-xl font-bold">Checking login…</div>
             ) : user ? (

@@ -35,7 +35,7 @@ export function Navbar() {
 
   return (
     <nav>
-      <div className="flex justify-between px-10 items-center w-full bg-teal-500 h-14 border-b-2 border-black gap-x-6 text-2xl text-white ">
+      <div className="flex flex-wrap justify-between px-4 md:px-10 items-center w-full bg-teal-500 min-h-14 py-2 border-b-2 border-black gap-x-6 gap-y-2 text-2xl text-white">
         <ul className="flex items-center gap-x-6">
           <li>
             <Link to="/" className="hover:text-yellow-500">
@@ -54,7 +54,7 @@ export function Navbar() {
           </li>
         </ul>
 
-        <div className="flex items-center gap-x-3">
+        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
           {authLoading ? (
             <span className="text-base">Checking session…</span>
           ) : user ? (
@@ -70,13 +70,13 @@ export function Navbar() {
               </button>
             </>
           ) : (
-            <form onSubmit={handleSubmit} className="flex items-center gap-x-2">
+            <form onSubmit={handleSubmit} className="flex flex-wrap items-center justify-end gap-x-2 gap-y-2">
               {mode === "signup" && (
                 <input
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="username"
-                  className="bg-white text-black px-2 rounded border text-base w-32"
+                  className="bg-white text-black px-2 rounded border text-base w-32 max-w-full"
                   type="text"
                   required
                   minLength={3}
@@ -87,7 +87,7 @@ export function Navbar() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email"
-                className="bg-white text-black px-2 rounded border text-base w-44"
+                className="bg-white text-black px-2 rounded border text-base w-40 max-w-full"
                 type="email"
                 required
               />
@@ -96,7 +96,7 @@ export function Navbar() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="password"
                 type="password"
-                className="bg-white text-black px-2 rounded border text-base w-32"
+                className="bg-white text-black px-2 rounded border text-base w-32 max-w-full"
                 required
                 minLength={8}
                 maxLength={72}

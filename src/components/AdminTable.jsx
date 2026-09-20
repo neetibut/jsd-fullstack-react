@@ -109,13 +109,13 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full min-w-0">
       {formError && (
         <div className="w-full mb-2 px-4 py-2 bg-rose-100 text-rose-800 text-sm rounded border border-rose-300">
           {formError}
         </div>
       )}
-      <form onSubmit={handleSubmit} className="pb-3">
+      <form onSubmit={handleSubmit} className="pb-3 flex flex-wrap items-center justify-center gap-y-2">
         <input
           onChange={handleChange}
           value={form.username}
@@ -171,7 +171,8 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
           Save new user
         </button>
       </form>
-      <table className="w-full border-separate">
+      <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[640px] border-separate">
         <thead>
           <tr className="text-center font-bold bg-gray-200">
             <th className="border rounded-tl-lg p-2">Username</th>
@@ -269,7 +270,8 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 }

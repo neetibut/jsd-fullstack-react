@@ -1,7 +1,7 @@
 export function UserTable({ users }) {
   return (
-    <div>
-      <table className="w-full border-separate">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full min-w-[560px] border-separate">
         <thead>
           <tr className="bg-gray-200">
             <th className="border rounded-tl-lg p-2">Username</th>
