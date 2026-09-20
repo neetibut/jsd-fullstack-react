@@ -23,6 +23,13 @@ export function useChat() {
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
+        // A quota error is a "come back later", not a broken app. Say so in
+        // those terms instead of surfacing the raw upstream message.
+        if (res.status === 429) {
+          throw new Error(
+            "The AI is rate limited right now. Please try again in a little while.",
+          );
+        }
         throw new Error(body.message || body.error || "Request failed");
       }
       return res.json();
