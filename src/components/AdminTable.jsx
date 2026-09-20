@@ -55,12 +55,23 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this user?")) return;
-    const res = await fetch(`${API}/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    if (!res.ok) return;
-    setUsers(users.filter((user) => user._id !== id));
+    setFormError(null);
+    try {
+      const res = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      // A failed delete used to return silently, leaving the row on screen
+      // with no explanation. The API now 403s when you are not an admin, so
+      // that silence is the difference between "denied" and "nothing happened".
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || body.error || "Failed to delete user");
+      }
+      setUsers(users.filter((user) => user._id !== id));
+    } catch (error) {
+      setFormError(error.message || "Failed to delete user");
+    }
   };
 
   const handleEdit = (user) => {
