@@ -4,10 +4,13 @@ import { useChat } from "../hooks/useChat";
 import { ChatMessage } from "../components/ChatMessage";
 import { ConversationList } from "../components/ConversationList";
 
+// Semantic lookups the retrieval design can actually answer. Aggregate
+// questions ("how many users?") are deliberately absent: the model only ever
+// sees the top-K matches, so it cannot count the table.
 const SUGGESTIONS = [
   "Who are the admins?",
-  "List everyone with a gmail address",
-  "How many users are there?",
+  "Who works on security?",
+  "Who could help with data analysis?",
 ];
 
 export default function Chat() {
