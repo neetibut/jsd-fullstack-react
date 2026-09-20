@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { MarkdownText } from "./MarkdownText";
+
 // One turn in the thread. Assistant turns can expand the users that were
 // retrieved to ground the answer.
 export function ChatMessage({ message }) {
@@ -11,13 +13,19 @@ export function ChatMessage({ message }) {
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className={`max-w-[80%] ${isUser ? "items-end" : "items-start"}`}>
         <div
-          className={`rounded-2xl px-4 py-2 whitespace-pre-wrap ${
+          className={`rounded-2xl px-4 py-2 ${
+            isUser ? "whitespace-pre-wrap" : ""
+          } ${
             isUser
               ? "bg-sky-500 text-white rounded-br-sm"
               : "bg-gray-100 text-gray-900 rounded-bl-sm border"
           } ${message.pending ? "opacity-60" : ""}`}
         >
-          {message.content}
+          {isUser ? (
+            message.content
+          ) : (
+            <MarkdownText>{message.content}</MarkdownText>
+          )}
         </div>
 
         {!isUser && sources.length ? (
