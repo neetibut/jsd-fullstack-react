@@ -50,13 +50,15 @@ export default function Chat() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen p-6 text-xl font-bold">Checking login…</div>
+      <div className="min-h-screen w-full p-6 text-xl font-bold">
+        Checking login…
+      </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen p-6 flex flex-col items-center gap-y-3">
+      <div className="min-h-screen w-full p-6 flex flex-col items-center gap-y-3">
         <h1 className="mt-20 text-4xl font-extrabold">AI Chat</h1>
         <p className="text-xl font-bold">Please log in to use the chatbot</p>
       </div>
@@ -64,7 +66,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="min-h-screen p-6 flex flex-col gap-y-4">
+    <div className="min-h-screen w-full p-6 flex flex-col gap-y-4">
       <section className="text-center">
         <h1 className="text-4xl font-extrabold">Ask AI about users</h1>
         <p className="text-gray-600 mt-1">
