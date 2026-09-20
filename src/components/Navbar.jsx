@@ -47,6 +47,11 @@ export function Navbar() {
               Owner
             </Link>
           </li>
+          <li>
+            <Link to="/chat" className="hover:text-yellow-500">
+              AI Chat
+            </Link>
+          </li>
         </ul>
 
         <div className="flex items-center gap-x-3">

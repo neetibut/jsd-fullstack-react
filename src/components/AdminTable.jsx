@@ -5,6 +5,7 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
     username: "",
     email: "",
     role: "",
+    position: "",
     password: "",
   });
 
@@ -13,6 +14,7 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
     username: "",
     email: "",
     role: "",
+    position: "",
   });
   const [formError, setFormError] = useState(null);
 
@@ -39,7 +41,13 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
         throw new Error(body.message || body.error || "Failed to create user");
       }
       await fetchUsers();
-      setForm({ username: "", email: "", role: "", password: "" });
+      setForm({
+        username: "",
+        email: "",
+        role: "",
+        position: "",
+        password: "",
+      });
     } catch (error) {
       setFormError(error.message || "Failed to create user");
     }
@@ -61,6 +69,7 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
       username: user.username,
       email: user.email,
       role: user.role,
+      position: user.position || "",
     });
   };
 
@@ -127,6 +136,14 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
         </select>
         <input
           onChange={handleChange}
+          value={form.position}
+          name="position"
+          className="bg-white mx-1 w-56 px-2 rounded border"
+          placeholder="Position (e.g. Backend Engineer)"
+          maxLength={100}
+        />
+        <input
+          onChange={handleChange}
           value={form.password}
           name="password"
           className="bg-white mx-1 w-32 px-2 rounded border"
@@ -149,6 +166,7 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
             <th className="border rounded-tl-lg p-2">Username</th>
             <th className="border p-2">Email</th>
             <th className="border p-2">Role</th>
+            <th className="border p-2">Position</th>
             <th className="border rounded-tr-lg p-2">Action</th>
           </tr>
         </thead>
@@ -191,6 +209,16 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
                     </select>
                   </td>
                   <td className="border p-2 ">
+                    <input
+                      value={editForm.position}
+                      onChange={handleEditChange}
+                      name="position"
+                      className="bg-white w-full px-2 rounded border"
+                      placeholder="Position"
+                      maxLength={100}
+                    />
+                  </td>
+                  <td className="border p-2 ">
                     <button
                       onClick={() => handleEditSave(user._id)}
                       className="cursor-pointer bg-teal-400 hover:bg-teal-500 text-white px-2 rounded-xl"
@@ -210,6 +238,7 @@ export function AdminTable({ users, setUsers, fetchUsers, API }) {
                   <td className="border p-2 ">{user.username}</td>
                   <td className="border p-2 ">{user.email}</td>
                   <td className="border p-2 ">{user.role}</td>
+                  <td className="border p-2 ">{user.position}</td>
                   <td className="border p-2 ">
                     <button
                       onClick={() => handleEdit(user)}

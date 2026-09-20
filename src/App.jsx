@@ -3,6 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { Layout } from "./components/Layout";
 import Home from "./views/Home";
 import Owner from "./views/Owner";
+import Chat from "./views/Chat";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/owner",
         element: <Owner />,
+      },
+      {
+        path: "/chat",
+        element: <Chat />,
       },
     ],
   },
