@@ -127,7 +127,8 @@ export default function Home() {
                 <ul className="list-disc pl-6 mt-1">
                   {askResult.sources.map((s) => (
                     <li key={s._id}>
-                      {s.username} ({s.role}) — {s.email}
+                      {s.username} ({s.role}
+                      {s.position ? `, ${s.position}` : ""}) — {s.email}
                     </li>
                   ))}
                 </ul>
